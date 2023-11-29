@@ -7,16 +7,13 @@ module.exports = {
   ],
   theme: {
     extend: {
-      screens: {
-        'sm': '640px',
-        'md': '768px',
-        'lg': '1024px',
-        'xl': '1280px',
-        // Add additional breakpoints if necessary
-      },
       colors: {
         primary: '#d6d6d6',
         secondary: '#b5b5b5',
+        darkTheme: '#2d2d30',
+        darkThemeText: '#d2d3db',
+        lightTheme: '#d2d3db',
+        lightThemeText: '#2d2d30',
         greenTheme: '#355E3B',
         pinkTheme: '#FFC0CB',
         darkRedTheme: '#8b0000',
