@@ -3,27 +3,68 @@
 import { useEffect, useState } from "react";
 import settingsIcon from '../../public/settings.svg'
 import Image from "next/image";
+import MyButton from './components/MyButton';
+import SideBar from './components/SideBar';
 
 export default function Home() {
-  const [side, setSide] = useState('right-0')
-  const [antiSide, setAntiSide] = useState('left-0')
+  const props = JSON.parse(localStorage.getItem('props'))
+  const [side, setSide] = useState(props.side)
+  const [antiSideBar, setAntiSideBar] = useState('hidden')
   const [width, setWidth] = useState('w-0')
   const [mobileWidth, setMobileWidth] = useState('w-0')
-  const [antiWidth, setAntiWidth] = useState('w-0')
-  const [antiMobileWidth, setAntiMobileWidth] = useState('w-0')
-  const [blur, setBlur] = useState('')
-  const [fontFamily, setFontFamily] = useState('')
-  const [textColor, setTextColor] = useState('text-greenTheme')
-  const [color, setColor] = useState('greenTheme')
+  const [fontFamily, setFontFamily] = useState(props.fontFamily)
+  const [textColor, setTextColor] = useState(props.textColor)
+  const [color, setColor] = useState(props.color)
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Set&GetLocalStorage
+  useEffect(() => {
+    localStorage.setItem('props', JSON.stringify({
+      side: side,
+      fontFamily: fontFamily,
+      textColor: textColor,
+      color: color,
+    }));
+  }, [color, fontFamily, side, textColor]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      setIsMobile(screenWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
+  const closeSideBar = () => {
+    setWidth('w-0');
+    setMobileWidth('w-0');
+    setAntiSideBar('hidden')
+  }
+  const openSideBar = () => {
+    setWidth('w-1/4');
+    setMobileWidth('w-full');
+    setAntiSideBar('block');
+  }
 
-  console.log(width)
   return (
     <div className={`${fontFamily} bg-primary shadow-md flex justify-center items-center h-screen w-screen`}>
 
-      <button onClick={() => { setWidth('w-1/4'); setMobileWidth('w-4/5'); setBlur('blur-md');setAntiMobileWidth('w-1/5'); setAntiWidth('w-3/4') }} className={` animate-bounce absolute ${side} p-5 text-black flex bg-${color} flex-col rounded-full justify-around`} ><Image className="animate-spin" src={settingsIcon} /></button>
+      {/* Settings Button */}
+      <button
+        onClick={openSideBar}
+        className={`animate-bounce absolute ${side} p-5 text-black flex bg-${color} flex-col rounded-full justify-around`} >
+        <Image className="animate-spin" src={settingsIcon} />
+      </button>
+
+      {/* AntiSideBar */}
+      <div className={`h-full w-full bg-[#201d1d8f] absolute z-10 bg-pink ${antiSideBar}`}
+        onClick={closeSideBar}>
+      </div>
+
 
       {/* <LoginContainer /> */}
       <div className={`bg-white flex w-4/5 lg:w-1/3 justify-center items-center rounded-lg`}>
@@ -57,47 +98,46 @@ export default function Home() {
       </div>
 
 
-      <div className={`${antiMobileWidth} lg:${antiWidth} h-full ${blur} absolute z-10 bg-pink ${antiSide}`} onClick={() => { setWidth('w-0'); setMobileWidth('w-0'); setBlur('');setAntiMobileWidth('w-0'); setAntiWidth('w-0') }}>
-      </div>
       {/* <SideBar /> */}
-      <div className={` overflow-hidden	transition-all duration-500 ease-in-out flex bg-white truncate text-black ${mobileWidth} lg:${width} flex-col h-screen justify-around items-center absolute ${side}`}>
+      <div className={`overflow-hidden transition-all duration-500 ease-in-out z-20 flex bg-white truncate text-black flex-col h-screen justify-around items-center absolute
+      ${isMobile ? mobileWidth : width} ${side}`}>
+
+        {isMobile && <div className="animate-bounce" onClick={closeSideBar}>X</div >}
+
         <div className='w-full flex flex-col items-center gap-5 justify-around'>
           <h1 className='text-3xl'>THEME LAYOUT</h1>
           <div className='w-full flex justify-around'>
-            <button onClick={() => { setSide('left-0'); setAntiSide('right-0') }}>GO LEFT</button>
-            <button onClick={() => { setSide('right-0'); setAntiSide('left-0') }}>GO RIGHT</button>
+            <MyButton text="GO LEFT" click={() => { setSide('left-0') }} cname={""} />
+            <MyButton text="GO RIGHT" click={() => { setSide('right-0') }} cname={""} />
           </div>
         </div>
-
 
         <div className='w-full flex flex-col items-center gap-5 justify-around'>
           <h1 className='text-3xl'>FONT STYLE</h1>
           <div className='w-full flex justify-around'>
-            <button className={`font-mono`} onClick={() => setFontFamily('font-mono')}>Mono</button>
-            <button className={`font-sans`} onClick={() => setFontFamily('font-sans')}>Sans</button>
-            <button className={`font-serif`} onClick={() => setFontFamily('font-serif')}>Serif</button>
-            <button className={`font-roboto`} onClick={() => setFontFamily('font-roboto')}>Roboto</button>
+            <MyButton text="MONO" click={() => { setFontFamily('font-mono') }} cname={`font-mono`} />
+            <MyButton text="SANS" click={() => { setFontFamily('font-sans') }} cname={`font-sans`} />
+            <MyButton text="SERİF" click={() => { setFontFamily('font-serif') }} cname={`font-serif`} />
+            <MyButton text="ROBOTO" click={() => { setFontFamily('font-roboto') }} cname={`font-roboto`} />
           </div>
         </div>
-
 
         <div className='w-full flex flex-col items-center gap-5 justify-around'>
           <h1 className='text-3xl'>PRESENT COLOR</h1>
           <div className='w-full flex-col flex justify-around'>
             <span className='w-full flex justify-around'>
-              <button className='rounded-full p-5 mr-2 bg-pinkTheme' onClick={() => { setColor('pinkTheme'); setTextColor('text-pinkTheme') }}></button>
-              <button className='rounded-full p-5 mr-2 bg-darkRedTheme' onClick={() => { setColor('darkRedTheme'); setTextColor('text-darkRedTheme') }}></button>
-              <button className='rounded-full p-5 mr-2 bg-greenTheme' onClick={() => { setColor('greenTheme'); setTextColor('text-greenTheme') }}></button>
-              <button className='rounded-full p-5 mr-2 bg-yellowTheme' onClick={() => { setColor('yellowTheme'); setTextColor('text-yellowTheme') }}></button>
+              <MyButton text="" click={() => { setColor('pinkTheme'); setTextColor('text-pinkTheme') }} cname={`rounded-full p-5 mr-2 bg-pinkTheme`} />
+              <MyButton text="" click={() => { setColor('yellowTheme'); setTextColor('text-yellowTheme') }} cname={`rounded-full p-5 mr-2 bg-yellowTheme`} />
+              <MyButton text="" click={() => { setColor('blueTheme'); setTextColor('text-blueTheme') }} cname={`rounded-full p-5 mr-2 bg-blueTheme`} />
+              <MyButton text="" click={() => { setColor('greenTheme'); setTextColor('text-greenTheme') }} cname={`rounded-full p-5 mr-2 bg-greenTheme`} />
             </span>
-            <span className='w-full flex justify-around' >
-              <button className='rounded-full p-5 mr-2 bg-blueTheme' onClick={() => { setColor('blueTheme'); setTextColor('text-blueTheme') }}></button>
-              <button className='rounded-full p-5 mr-2 bg-lightBlueTheme' onClick={() => { setColor('lightBlueTheme'); setTextColor('text-lightBlueTheme') }}></button>
-              <button className='rounded-full p-5 mr-2 bg-darkBlueTheme' onClick={() => { setColor('darkBlueTheme'); setTextColor('text-darkBlueTheme') }}></button>
+            <span className='w-full flex justify-around'>
+              <MyButton text="" click={() => { setColor('lightBlueTheme'); setTextColor('text-lightBlueTheme') }} cname={`rounded-full p-5 mr-2 bg-lightBlueTheme`} />
+              <MyButton text="" click={() => { setColor('darkBlueTheme'); setTextColor('text-darkBlueTheme') }} cname={`rounded-full p-5 mr-2 bg-darkBlueTheme`} />
+              <MyButton text="" click={() => { setColor('darkRedTheme'); setTextColor('text-darkRedTheme') }} cname={`rounded-full p-5 mr-2 bg-darkRedTheme`} />
             </span>
           </div>
         </div>
-
       </div>
 
     </div>

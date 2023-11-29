@@ -7,6 +7,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        // Add additional breakpoints if necessary
+      },
       colors: {
         primary: '#d6d6d6',
         secondary: '#b5b5b5',
