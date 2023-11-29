@@ -10,8 +10,8 @@ export default function SettingsButtonConponent({ openSideBar, side, color}) {
     return (
         <button
             onClick={openSideBar}
-            className={`animate-bounce absolute ${side} p-5 top-20 text-black flex bg-${color} flex-col rounded-full justify-around`} >
-            <Image className="animate-spin" src={settingsIcon} />
+            className={`absolute ${side} p-5 top-20 text-black flex bg-${color} flex-col rounded-full justify-around`} >
+            <Image className="animate-spin-slow" src={settingsIcon} />
         </button>
     )
 }

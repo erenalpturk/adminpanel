@@ -14,12 +14,18 @@ export default function Home() {
   const [antiSideBar, setAntiSideBar] = useState('hidden')
   const [width, setWidth] = useState('w-0')
   const [mobileWidth, setMobileWidth] = useState('w-0')
-  const [fontFamily, setFontFamily] = useState(props.fontFamily || 'font-sans')
+  const [tabletWidth, setTabletWidth] = useState('w-0')
+  const [fontFamily, setFontFamily] = useState(props.fontFamily || 'font-Inter')
   const [textColor, setTextColor] = useState(props.textColor || 'text-greenTheme')
   const [color, setColor] = useState(props.color || 'greenTheme')
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const [backgroundTheme, setBackgroundTheme] = useState(props.backgroundTheme || 'bg-lightTheme')
   const [textTheme, setTextTheme] = useState(props.textTheme || 'text-lightThemeText')
+  const [loginBackground, setLoginBackground] = useState(props.loginBackground || 'bg-loginBackgroundLighter')
+  const [inputBackground, setInputBackground] = useState(props.inputBackground || 'bg-loginBackgroundLighter')
+  const [showPassword, setShowPassword] = useState('password')
+
 
   // Set&GetLocalStorage
   useEffect(() => {
@@ -29,14 +35,17 @@ export default function Home() {
       textColor: textColor,
       color: color,
       backgroundTheme: backgroundTheme,
-      textTheme: textTheme
+      textTheme: textTheme,
+      loginBackground: loginBackground,
+      inputBackground: inputBackground
     }));
-  }, [color, fontFamily, side, textColor, backgroundTheme, textTheme]);
+  }, [color, fontFamily, side, textColor, backgroundTheme, textTheme, loginBackground, inputBackground]);
 
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
       setIsMobile(screenWidth < 768);
+      setIsTablet(screenWidth < 1280)
     };
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -52,7 +61,8 @@ export default function Home() {
   }
   const openSideBar = () => {
     setWidth('w-1/4');
-    setMobileWidth('w-full');
+    setMobileWidth('w-3/4');
+    setTabletWidth('w-1/3');
     setAntiSideBar('block');
   }
 
@@ -76,22 +86,34 @@ export default function Home() {
         textColor={textColor}
         textTheme={textTheme}
         backgroundTheme={backgroundTheme}
+        loginBackground={loginBackground}
+        inputBackground={inputBackground}
+        showPassword={showPassword}
+        setShowPassword={setShowPassword}
       />
 
 
       <SideBarComponent
         isMobile={isMobile}
+        isTablet={isTablet}
         mobileWidth={mobileWidth}
         width={width}
+        tabletWidth={tabletWidth}
         side={side}
         setSide={setSide}
         setFontFamily={setFontFamily}
+        color={color}
         setColor={setColor}
         setTextColor={setTextColor}
+        textColor={textColor}
         setBackgroundTheme={setBackgroundTheme}
         backgroundTheme={backgroundTheme}
         textTheme={textTheme}
         setTextTheme={setTextTheme}
+        setLoginBackground={setLoginBackground}
+        setInputBackground={setInputBackground}
+        inputBackground={inputBackground}
+        fontFamily={fontFamily}
       />
 
     </div>
