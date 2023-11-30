@@ -10,7 +10,11 @@ import AntiSideComponent from "./components/AntiSideComponent";
 import { Context } from "./context";
 
 export default function Home() {
-  const props = JSON.parse(localStorage.getItem('props')) || {};
+
+  if (typeof window !== 'undefined') {
+    const props = JSON.parse(localStorage.getItem('props')) || {};
+  }
+ 
   const [side, setSide] = useState(props.side || 'left-0')
   const [antiSideBar, setAntiSideBar] = useState('hidden')
   const [width, setWidth] = useState('w-0')
