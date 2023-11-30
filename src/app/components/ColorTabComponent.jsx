@@ -2,9 +2,12 @@
 
 import React from 'react'
 import MyButton from '../components/MyButton';
+import { Context, useContext } from '../context';
 
 
-export default function ColorTabComponent({ setColor, isMobile, setTextColor, setSide, setBackgroundTheme, setLoginBackground, setTextTheme, color, inputBackground, setInputBackground, width, mobileWidth, side, backgroundTheme }) {
+export default function ColorTabComponent() {
+    const { setColor, isMobile, setTextColor, setSide, setBackgroundTheme, setLoginBackground, setTextTheme, color, inputBackground, setInputBackground, setBlack, width, mobileWidth, side, backgroundTheme } = useContext(Context).data
+
     const dark = 'bg-darkTheme' === backgroundTheme
     const light = 'bg-lightTheme' === backgroundTheme
     const purpleTheme = 'text-purpleTheme' === color
@@ -19,14 +22,21 @@ export default function ColorTabComponent({ setColor, isMobile, setTextColor, se
     const left = 'left-0' === side
     const right = 'right-0' === side
     
+const darkFunction = () => {
+    setBackgroundTheme('bg-darkTheme'); setLoginBackground('bg-loginBackgroundDarker'); setTextTheme('text-darkThemeText'); setBlack("text-white")
+}
+const lightFunction = () => {
+    setBackgroundTheme('bg-lightTheme'); setLoginBackground('bg-loginBackgroundLighter'); setTextTheme('text-lightThemeText'); setBlack("text-black")
+}
+
 
     return (
         <div className={`w-[100%] flex flex-col ${isMobile ? mobileWidth : width} ${side}`}>
             <div className='w-[90%] m-auto flex items-center justify-around'>
                 <h1 className='w-60 text-[14px]'> THEME MODE</h1>
                 <div className='w-40 flex justify-around'>
-                    <MyButton text="DARK" click={() => { setBackgroundTheme('bg-darkTheme'); setLoginBackground('bg-loginBackgroundDarker'); setTextTheme('text-darkThemeText') }} cname={`bg-darkTheme ${dark && 'border-blue-300 border-2 shadow-md shadow-blue-300'} text-darkThemeText rounded px-6 py-3`} />
-                    <MyButton text="LİGHT" click={() => { setBackgroundTheme('bg-lightTheme'); setLoginBackground('bg-loginBackgroundLighter'); setTextTheme('text-lightThemeText') }} cname={`bg-lightTheme ${light && 'border-blue-300 border-2 shadow-md shadow-blue-300'} text-lightThemeText rounded px-6 py-3`} />
+                    <MyButton text="DARK" click={darkFunction} cname={`bg-darkTheme ${dark && 'border-blue-300 border-2 shadow-md shadow-blue-300'} text-darkThemeText rounded px-6 py-3`} />
+                    <MyButton text="LİGHT" click={lightFunction} cname={`bg-lightTheme ${light && 'border-blue-300 border-2 shadow-md shadow-blue-300'} text-lightThemeText rounded px-6 py-3`} />
                 </div>
             </div>
 

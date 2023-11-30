@@ -2,12 +2,16 @@
 
 import React from 'react'
 import MyButton from '../components/MyButton';
+import { Context, useContext } from '../context';
 
 
-export default function TextTabComponent({ setFontFamily, isMobile, width, mobileWidth, side, fontFamily}) {
-const roboto = 'font-roboto' === fontFamily 
-const inter = 'font-Inter' === fontFamily 
-const poppins = 'font-Poppins' === fontFamily 
+export default function TextTabComponent() {
+    
+    const { setFontFamily, isMobile, width, mobileWidth, side, fontFamily } = useContext(Context).data
+    const roboto = 'font-roboto' === fontFamily
+    const inter = 'font-Inter' === fontFamily
+    const poppins = 'font-Poppins' === fontFamily
+    
     return (
         <div className={`w-[100%] flex flex-col ${isMobile ? mobileWidth : width} ${side}`}>
             <div className='w-[90%] m-auto flex flex-col items-start gap-5 justify-center'>

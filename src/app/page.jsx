@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import settingsIcon from '../../public/settings.svg'
 import MyButton from './components/MyButton';
 import SideBarComponent from "./components/SideBarComponent";
-import LoginComponent from "./components/LoginComponent";
+import LoginRegisterComponent from "./components/LoginRegisterComponent";
 import SettingsButtonConponent from "./components/SettingsButtonConponent";
 import AntiSideComponent from "./components/AntiSideComponent";
+import { Context } from "./context";
 
 export default function Home() {
   const props = JSON.parse(localStorage.getItem('props')) || {};
@@ -25,8 +26,14 @@ export default function Home() {
   const [loginBackground, setLoginBackground] = useState(props.loginBackground || 'bg-loginBackgroundLighter')
   const [inputBackground, setInputBackground] = useState(props.inputBackground || 'bg-loginBackgroundLighter')
   const [showPassword, setShowPassword] = useState('password')
+  const [signUp, setSignUp] = useState(true)
+  const [black, setBlack] = useState(props.black ||'text-black')
 
 
+  const reset = () => {
+    setSide("left-0"); setFontFamily("font-Inter"); setTextColor("text-greenTheme"); setColor("greenTheme"); setBackgroundTheme("bg-lightTheme"); setTextTheme('text-lightThemeText');
+    setLoginBackground('bg-loginBackgroundLighter'); setInputBackground('bg-loginBackgroundLighter'); setBlack('text-black')
+  }
   // Set&GetLocalStorage
   useEffect(() => {
     localStorage.setItem('props', JSON.stringify({
@@ -37,9 +44,10 @@ export default function Home() {
       backgroundTheme: backgroundTheme,
       textTheme: textTheme,
       loginBackground: loginBackground,
-      inputBackground: inputBackground
+      inputBackground: inputBackground,
+      black: black,
     }));
-  }, [color, fontFamily, side, textColor, backgroundTheme, textTheme, loginBackground, inputBackground]);
+  }, [color, fontFamily, side, textColor, backgroundTheme, textTheme, loginBackground, inputBackground, black]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -57,7 +65,9 @@ export default function Home() {
   const closeSideBar = () => {
     setWidth('w-0');
     setMobileWidth('w-0');
+    setTabletWidth('w-0');
     setAntiSideBar('hidden')
+    console.log('closeSideBar');
   }
   const openSideBar = () => {
     setWidth('w-1/4');
@@ -66,56 +76,51 @@ export default function Home() {
     setAntiSideBar('block');
   }
 
+  const data = {
+    reset,
+    openSideBar,
+    closeSideBar,
+    setSide,
+    setFontFamily,
+    setTextColor,
+    setColor,
+    setBackgroundTheme,
+    setTextTheme,
+    setLoginBackground,
+    setInputBackground,
+    setShowPassword,
+    setSignUp,
+    setBlack,
+    black,
+    signUp,
+    side,
+    antiSideBar,
+    width,
+    mobileWidth,
+    tabletWidth,
+    fontFamily,
+    textColor,
+    color,
+    isMobile,
+    isTablet,
+    backgroundTheme,
+    textTheme,
+    loginBackground,
+    inputBackground,
+    showPassword,
+  }
+
   return (
-    <div className={`${fontFamily} ${backgroundTheme} flex justify-center items-center h-screen w-screen`}>
+    <Context.Provider value={{ data }}>
+      <div className={`${fontFamily} ${backgroundTheme} flex justify-center items-center h-screen w-screen`}>
 
-      <SettingsButtonConponent
-      openSideBar={openSideBar}
-      side={side}
-      color={color}
-      />
+        <SettingsButtonConponent />
 
-      <AntiSideComponent
-      closeSideBar={closeSideBar}
-      antiSideBar={antiSideBar}
-      />
+        <AntiSideComponent />
+        <LoginRegisterComponent />
+        <SideBarComponent />
 
-
-      <LoginComponent
-        color={color}
-        textColor={textColor}
-        textTheme={textTheme}
-        backgroundTheme={backgroundTheme}
-        loginBackground={loginBackground}
-        inputBackground={inputBackground}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
-      />
-
-
-      <SideBarComponent
-        isMobile={isMobile}
-        isTablet={isTablet}
-        mobileWidth={mobileWidth}
-        width={width}
-        tabletWidth={tabletWidth}
-        side={side}
-        setSide={setSide}
-        setFontFamily={setFontFamily}
-        color={color}
-        setColor={setColor}
-        setTextColor={setTextColor}
-        textColor={textColor}
-        setBackgroundTheme={setBackgroundTheme}
-        backgroundTheme={backgroundTheme}
-        textTheme={textTheme}
-        setTextTheme={setTextTheme}
-        setLoginBackground={setLoginBackground}
-        setInputBackground={setInputBackground}
-        inputBackground={inputBackground}
-        fontFamily={fontFamily}
-      />
-
-    </div>
+      </div>
+    </Context.Provider>
   )
 }
