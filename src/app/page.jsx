@@ -10,9 +10,11 @@ import AntiSideComponent from "./components/AntiSideComponent";
 import { Context } from "./context";
 
 export default function Home() {
+  const [props, setProps] = useState(props.side || 'left-0')
 
   if (typeof window !== 'undefined') {
     const props = JSON.parse(localStorage.getItem('props')) || {};
+    setProps(props)
   }
  
   const [side, setSide] = useState(props.side || 'left-0')
@@ -32,6 +34,7 @@ export default function Home() {
   const [showPassword, setShowPassword] = useState('password')
   const [signUp, setSignUp] = useState(true)
   const [black, setBlack] = useState(props.black ||'text-black')
+  
 
 
   const reset = () => {
