@@ -10,51 +10,29 @@ import AntiSideComponent from "./components/AntiSideComponent";
 import { Context } from "./context";
 
 export default function Home() {
-  const [props, setProps] = useState({})
 
-  if (typeof window !== 'undefined') {
-    const props = JSON.parse(localStorage.getItem('props')) || {};
-    setProps(props)
-  }
- 
-  const [side, setSide] = useState(props.side || 'left-0')
+  const [side, setSide] = useState('left-0')
   const [antiSideBar, setAntiSideBar] = useState('hidden')
   const [width, setWidth] = useState('w-0')
   const [mobileWidth, setMobileWidth] = useState('w-0')
   const [tabletWidth, setTabletWidth] = useState('w-0')
-  const [fontFamily, setFontFamily] = useState(props.fontFamily || 'font-Inter')
-  const [textColor, setTextColor] = useState(props.textColor || 'text-greenTheme')
-  const [color, setColor] = useState(props.color || 'greenTheme')
+  const [fontFamily, setFontFamily] = useState('font-Inter')
+  const [textColor, setTextColor] = useState('text-greenTheme')
+  const [color, setColor] = useState('greenTheme')
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
-  const [backgroundTheme, setBackgroundTheme] = useState(props.backgroundTheme || 'bg-lightTheme')
-  const [textTheme, setTextTheme] = useState(props.textTheme || 'text-lightThemeText')
-  const [loginBackground, setLoginBackground] = useState(props.loginBackground || 'bg-loginBackgroundLighter')
-  const [inputBackground, setInputBackground] = useState(props.inputBackground || 'bg-loginBackgroundLighter')
+  const [backgroundTheme, setBackgroundTheme] = useState('bg-lightTheme')
+  const [textTheme, setTextTheme] = useState('text-lightThemeText')
+  const [loginBackground, setLoginBackground] = useState('bg-loginBackgroundLighter')
+  const [inputBackground, setInputBackground] = useState('bg-loginBackgroundLighter')
   const [showPassword, setShowPassword] = useState('password')
   const [signUp, setSignUp] = useState(true)
-  const [black, setBlack] = useState(props.black ||'text-black')
-  
-
+  const [black, setBlack] = useState('text-black')
 
   const reset = () => {
     setSide("left-0"); setFontFamily("font-Inter"); setTextColor("text-greenTheme"); setColor("greenTheme"); setBackgroundTheme("bg-lightTheme"); setTextTheme('text-lightThemeText');
     setLoginBackground('bg-loginBackgroundLighter'); setInputBackground('bg-loginBackgroundLighter'); setBlack('text-black')
   }
-  // Set&GetLocalStorage
-  useEffect(() => {
-    localStorage.setItem('props', JSON.stringify({
-      side: side,
-      fontFamily: fontFamily,
-      textColor: textColor,
-      color: color,
-      backgroundTheme: backgroundTheme,
-      textTheme: textTheme,
-      loginBackground: loginBackground,
-      inputBackground: inputBackground,
-      black: black,
-    }));
-  }, [color, fontFamily, side, textColor, backgroundTheme, textTheme, loginBackground, inputBackground, black]);
 
   useEffect(() => {
     const handleResize = () => {
