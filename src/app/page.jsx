@@ -10,7 +10,7 @@ import AntiSideComponent from "./components/AntiSideComponent";
 import { Context } from "./context";
 
 export default function Home() {
-  const [props, setProps] = useState(props.side || 'left-0')
+  const [props, setProps] = useState({})
 
   if (typeof window !== 'undefined') {
     const props = JSON.parse(localStorage.getItem('props')) || {};
